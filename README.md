@@ -59,7 +59,7 @@ Deux règles coupent les boucles et les doublons :
 | Protection | Comportement |
 |---|---|
 | Lecture en échec | Le run s'arrête **sans rien supprimer**. Un agenda illisible n'est jamais confondu avec un agenda vide. |
-| Suppressions massives | Au-delà de `safety.max_deletions` (20), arrêt et demande de `--force`. |
+| Suppressions massives | Au-delà de `safety.max_deletions` (150), arrêt et demande de `--force`. |
 | Agenda momentanément vide | Un agenda qui ne renvoie plus aucun événement alors que des copies le désignent ailleurs arrête le run. C'est la signature d'un profil Outlook en cours de première synchronisation ou d'un OST reconstruit — appliquer le plan effacerait toutes ses copies. |
 | Agenda momentanément vide | Un agenda qui ne renvoie plus aucun événement alors que des copies le désignent ailleurs arrête le run. C'est la signature d'un profil Outlook en cours de première synchronisation ou d'un OST reconstruit — appliquer le plan effacerait toutes ses copies. |
 | Copies hors fenêtre | Jamais supprimées : leur original est peut-être simplement hors de portée. |
@@ -161,7 +161,7 @@ Tout se règle dans `config.yaml` :
 |---|---|
 | `window.past_days` | profondeur dans le passé (30 par défaut) |
 | `window.future_months` | horizon futur (12 par défaut) |
-| `safety.max_deletions` | seuil de déclenchement du garde-fou |
+| `safety.max_deletions` | seuil de déclenchement du garde-fou (150) — à calibrer sur le volume de vos agendas : trop bas, un ménage manuel bloque chaque exécution |
 | `mirror.subject_prefix` | préfixe des titres copiés ; `{label}` = agenda source |
 | `mirror.hide_subject` | `true` : le titre réel n'est pas recopié, le préfixe devient tout le titre |
 | `mirror.copy_location` / `copy_body` | passer à `false` pour ne pas recopier lieu et description |

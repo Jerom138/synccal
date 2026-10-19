@@ -15,8 +15,11 @@ window:
 
 safety:
   # Au-dela de ce nombre de suppressions sur un seul run, le script s'arrete
-  # et exige --force. Protege contre un agenda temporairement vide ou illisible.
-  max_deletions: 20
+  # et exige --force. Calibrer sur le volume reel des agendas : trop bas, un
+  # menage manuel ordinaire bloque la synchronisation a chaque execution.
+  # La protection decisive contre l'accident n'est pas ce seuil mais la
+  # detection d'agenda momentanement vide, qui n'en a pas.
+  max_deletions: 150
 
 mirror:
   # Prefixe applique au titre des copies. "" = titre recopie tel quel.
