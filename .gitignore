@@ -1,0 +1,17 @@
+# Jetons OAuth, identifiants, liens ICS publies : jamais versionnes.
+secrets/
+
+# Journaux : ils contiennent les titres reels de vos evenements.
+logs/
+
+# Sauvegardes d'agendas : donnees personnelles.
+backup/
+
+# Configuration locale : contient vos adresses et noms de calendriers.
+# Partir de config.example.yaml.
+config.yaml
+config.local.yaml
+
+__pycache__/
+*.pyc
+.venv/

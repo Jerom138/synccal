@@ -1,0 +1,78 @@
+# ---------------------------------------------------------------------------
+# Modele de configuration. Copier en config.yaml et adapter :
+#   copy config.example.yaml config.yaml
+# config.yaml n'est pas versionne : il contient vos adresses.
+#
+# ATTENTION : la cle de chaque agenda (pro_a, pro_b, google ci-dessous) fait
+# partie de l'identite des copies deja posees. La renommer apres une premiere
+# synchronisation rendrait toutes ses copies orphelines, donc candidates a la
+# suppression. Choisissez ces cles une fois pour toutes.
+# ---------------------------------------------------------------------------
+
+window:
+  past_days: 30        # profondeur dans le passe
+  future_months: 12    # horizon futur (les recurrences sont eclatees en occurrences)
+
+safety:
+  # Au-dela de ce nombre de suppressions sur un seul run, le script s'arrete
+  # et exige --force. Protege contre un agenda temporairement vide ou illisible.
+  max_deletions: 20
+
+mirror:
+  # Prefixe applique au titre des copies. "" = titre recopie tel quel.
+  # {label} est remplace par le libelle de l'agenda source.
+  subject_prefix: ""
+  # true : le titre reel n'est pas recopie, subject_prefix devient tout le titre.
+  # Combine a copy_location/copy_body a false, les copies ne revelent que le creneau.
+  hide_subject: false
+  copy_location: true
+  copy_body: true
+
+calendars:
+
+  # --- Agenda Microsoft 365 principal, pilote via Outlook classique ---------
+  pro_a:
+    label: "Pro A"
+    backend: outlook_com
+    enabled: true
+    # Nom du magasin tel qu'affiche par check_outlook.py (souvent l'adresse).
+    # Laisser vide pour la boite aux lettres par defaut du profil.
+    store: "prenom.nom@votre-entreprise.com"
+
+  # --- Second agenda Microsoft 365 ------------------------------------------
+  pro_b:
+    label: "Pro B"
+    # ics_readonly -> lecture seule, via un flux ICS publie depuis Outlook Web
+    # outlook_com  -> lecture/ecriture, si l'agenda est joignable dans Outlook
+    backend: ics_readonly
+    enabled: true
+
+    # --- si backend = ics_readonly ---
+    # Le lien publie donne acces a l'agenda sans authentification : il vit donc
+    # dans secrets/, qui n'est pas versionne, et non ici.
+    url_file: "secrets/pro-b-ics-url.txt"
+
+    # --- si backend = outlook_com, trois facons de designer l'agenda ---
+    # 1. Compte ajoute au profil Outlook : son nom de magasin.
+    # store: "prenom.nom@autre-organisation.com"
+    #
+    # 2. Sous-calendrier d'un compte du profil (chemin sous le Calendrier).
+    # store: "prenom.nom@votre-entreprise.com"
+    # folder_path: "Autre agenda"
+    #
+    # 3. Agenda d'une autre personne, partage avec vous.
+    # shared_with: "prenom.nom@autre-organisation.com"
+    #
+    # false si le partage n'accorde pas le droit de modification : l'agenda
+    # alimente alors les autres sans jamais rien recevoir.
+    # writable: false
+
+  # --- Agenda Google --------------------------------------------------------
+  google:
+    label: "Google"
+    backend: google_cal
+    enabled: true
+    calendar_name: "Travail"             # nom exact du calendrier a synchroniser
+    # Le fichier client_secret*.json est detecte automatiquement dans secrets/.
+    # L'autorisation se fait une fois par : python -u authorize_google.py
+    token: "secrets/token_google.json"

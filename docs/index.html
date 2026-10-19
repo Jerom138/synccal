@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SyncCal</title>
+<meta name="description" content="Outil personnel de synchronisation entre deux agendas Microsoft 365 et un agenda Google.">
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f6f7f9;
+    --border: #e2e5ea;
+    --text: #1a1d21;
+    --muted: #5b6471;
+    --accent: #2f6f4f;
+    --accent-soft: #eaf3ee;
+    --warn-bg: #fdf6e7;
+    --warn-border: #e8d9ae;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14171a;
+      --surface: #1c2024;
+      --border: #2c3238;
+      --text: #e8eaed;
+      --muted: #a2abb6;
+      --accent: #74c79b;
+      --accent-soft: #1d2b24;
+      --warn-bg: #2a2418;
+      --warn-border: #4a3f24;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14171a;
+    --surface: #1c2024;
+    --border: #2c3238;
+    --text: #e8eaed;
+    --muted: #a2abb6;
+    --accent: #74c79b;
+    --accent-soft: #1d2b24;
+    --warn-bg: #2a2418;
+    --warn-border: #4a3f24;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 50rem; margin: 0 auto; padding: 3.5rem 16px 5rem; }
+  header { border-bottom: 1px solid var(--border); padding-bottom: 1.75rem; margin-bottom: 2.5rem; }
+  h1 { font-size: 2.1rem; line-height: 1.2; margin: 0 0 .4rem; letter-spacing: -.02em; }
+  .tagline { color: var(--muted); font-size: 1.08rem; margin: 0; }
+  h2 { font-size: 1.25rem; margin: 2.5rem 0 .75rem; letter-spacing: -.01em; }
+  h3 { font-size: 1rem; margin: 1.5rem 0 .4rem; }
+  p, li { color: var(--text); }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  code {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 4px;
+    padding: .1em .35em; font-size: .9em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  pre {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 1rem; overflow-x: auto; font-size: .88rem; line-height: 1.5;
+  }
+  pre code { background: none; border: 0; padding: 0; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .95rem; }
+  th, td { text-align: left; padding: .6rem .7rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { font-weight: 600; color: var(--muted); font-size: .82rem; text-transform: uppercase; letter-spacing: .04em; }
+  .note {
+    background: var(--warn-bg); border: 1px solid var(--warn-border);
+    border-radius: 8px; padding: .9rem 1.1rem; margin: 1.5rem 0;
+  }
+  .note p { margin: 0; font-size: .95rem; }
+  .pill {
+    display: inline-block; background: var(--accent-soft); color: var(--accent);
+    border-radius: 999px; padding: .2rem .7rem; font-size: .8rem; font-weight: 600;
+    letter-spacing: .02em;
+  }
+  footer {
+    margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+    color: var(--muted); font-size: .9rem;
+  }
+  footer a { margin-right: 1.2rem; }
+  ul { padding-left: 1.3rem; }
+  li { margin: .3rem 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="pill">Outil personnel</span>
+  <h1 style="margin-top:.7rem">SyncCal</h1>
+  <p class="tagline">Synchronisation sans doublon entre deux agendas Microsoft&nbsp;365 et un agenda Google.</p>
+</header>
+
+<h2>À quoi ça sert</h2>
+<p>
+  Je travaille avec deux agendas professionnels hébergés sur des organisations Microsoft&nbsp;365
+  distinctes, plus un agenda Google personnel dédié à mon activité professionnelle. Trois vues
+  séparées de la même journée, qu'il fallait tenir à jour à la main.
+</p>
+<p>
+  SyncCal est le script que j'exécute pour que ces trois agendas reflètent la même disponibilité.
+  Chaque événement créé dans l'un est recopié dans les autres, et les copies suivent les
+  modifications et les suppressions de leur original.
+</p>
+
+<h2>Comment ça marche</h2>
+<p>
+  Chaque copie porte un marqueur invisible désignant son événement d'origine, ainsi qu'une
+  empreinte de son contenu. À chaque exécution, le script relit les trois agendas, reconstruit
+  l'état à partir de ces marqueurs et en déduit les créations, modifications et suppressions
+  nécessaires.
+</p>
+<p>
+  Il n'existe aucune base de données : toute la mémoire de la synchronisation vit dans les agendas
+  eux-mêmes. Relancer le script sans rien avoir changé ne produit donc aucune action — c'est cette
+  propriété qui garantit l'absence de doublon.
+</p>
+
+<h3>Accès aux agendas</h3>
+<table>
+  <tr><th>Agenda</th><th>Accès</th></tr>
+  <tr><td>Microsoft&nbsp;365 n°1</td><td>Outlook classique installé en local, piloté en COM</td></tr>
+  <tr><td>Microsoft&nbsp;365 n°2</td><td>Flux ICS publié, en lecture seule</td></tr>
+  <tr><td>Google Agenda</td><td>API Google Calendar v3, via OAuth&nbsp;2.0</td></tr>
+</table>
+
+<h2>Garde-fous</h2>
+<ul>
+  <li>Un agenda illisible interrompt l'exécution : il n'est jamais confondu avec un agenda vide.</li>
+  <li>Au-delà d'un seuil de suppressions, le script s'arrête et réclame une confirmation explicite.</li>
+  <li>Les copies n'ont aucun participant : aucune invitation n'est jamais envoyée à qui que ce soit.</li>
+  <li>Les rappels sont désactivés sur les copies — l'original porte déjà le sien.</li>
+  <li>Le mode simulation est celui par défaut ; écrire demande un argument explicite.</li>
+  <li>Une commande de purge retire toutes les copies sans jamais toucher aux originaux.</li>
+</ul>
+
+<div class="note">
+  <p>
+    <strong>Usage strictement personnel.</strong> SyncCal s'exécute sur mon poste de travail, avec
+    mes propres accès, sur mes propres agendas. Il n'est pas proposé comme service, n'a pas
+    d'utilisateurs, et n'envoie aucune donnée vers un serveur.
+  </p>
+</div>
+
+<h2>Installation</h2>
+<pre><code>git clone https://github.com/Jerom138/synccal.git
+cd synccal
+pip install -r requirements.txt
+copy config.example.yaml config.yaml</code></pre>
+<p>
+  La marche à suivre complète — création des identifiants Google, configuration des agendas
+  Outlook, exécution planifiée — se trouve dans le
+  <a href="https://github.com/Jerom138/synccal#readme">README du dépôt</a>.
+</p>
+
+<footer>
+  <a href="privacy.html">Règles de confidentialité</a>
+  <a href="https://github.com/Jerom138/synccal">Code source</a>
+  <p style="margin-top:1rem">Projet personnel, publié sous licence MIT.</p>
+</footer>
+
+</div>
+</body>
+</html>

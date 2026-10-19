@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Confidentialité — SyncCal</title>
+<meta name="description" content="Règles de confidentialité de SyncCal : données utilisées, lieu de stockage, destinataires.">
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f6f7f9;
+    --border: #e2e5ea;
+    --text: #1a1d21;
+    --muted: #5b6471;
+    --accent: #2f6f4f;
+    --accent-soft: #eaf3ee;
+    --warn-bg: #fdf6e7;
+    --warn-border: #e8d9ae;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14171a; --surface: #1c2024; --border: #2c3238;
+      --text: #e8eaed; --muted: #a2abb6; --accent: #74c79b;
+      --accent-soft: #1d2b24; --warn-bg: #2a2418; --warn-border: #4a3f24;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14171a; --surface: #1c2024; --border: #2c3238;
+    --text: #e8eaed; --muted: #a2abb6; --accent: #74c79b;
+    --accent-soft: #1d2b24; --warn-bg: #2a2418; --warn-border: #4a3f24;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 50rem; margin: 0 auto; padding: 3.5rem 16px 5rem; }
+  .back { display: inline-block; color: var(--muted); text-decoration: none; font-size: .9rem; margin-bottom: 1.5rem; }
+  .back:hover { color: var(--accent); }
+  header { border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 2.5rem; }
+  h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 .4rem; letter-spacing: -.02em; }
+  .date { color: var(--muted); font-size: .92rem; margin: 0; }
+  h2 { font-size: 1.2rem; margin: 2.5rem 0 .7rem; letter-spacing: -.01em; }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  code {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 4px;
+    padding: .1em .35em; font-size: .9em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .95rem; }
+  th, td { text-align: left; padding: .6rem .7rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { font-weight: 600; color: var(--muted); font-size: .82rem; text-transform: uppercase; letter-spacing: .04em; }
+  .note {
+    background: var(--warn-bg); border: 1px solid var(--warn-border);
+    border-radius: 8px; padding: .9rem 1.1rem; margin: 1.5rem 0;
+  }
+  .note p { margin: 0; font-size: .95rem; }
+  ul { padding-left: 1.3rem; }
+  li { margin: .35rem 0; }
+  footer {
+    margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+    color: var(--muted); font-size: .9rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<a class="back" href="index.html">&larr; SyncCal</a>
+
+<header>
+  <h1>Règles de confidentialité</h1>
+  <p class="date">SyncCal — dernière mise à jour&nbsp;: 19 octobre 2026</p>
+</header>
+
+<div class="note">
+  <p>
+    <strong>En une phrase&nbsp;:</strong> SyncCal est un script personnel qui s'exécute sur mon
+    propre ordinateur, ne possède aucun serveur, ne collecte rien, et se contente de recopier mes
+    événements d'agenda entre mes trois agendas.
+  </p>
+</div>
+
+<h2>1. Qui édite cet outil</h2>
+<p>
+  SyncCal est un projet personnel développé et utilisé par son seul auteur. Il n'est pas proposé
+  comme service, ne dispose d'aucune base d'utilisateurs, et n'est pas destiné à être exécuté par
+  des tiers pour leur compte. Toute personne qui en récupérerait le code l'exécuterait sur sa
+  propre machine, avec ses propres identifiants, et deviendrait seule responsable de ses données.
+</p>
+
+<h2>2. Données utilisées</h2>
+<p>SyncCal lit et écrit uniquement des événements d'agenda. Pour chaque événement&nbsp;:</p>
+<ul>
+  <li>le titre&nbsp;;</li>
+  <li>les dates et heures de début et de fin, et le caractère «&nbsp;journée entière&nbsp;»&nbsp;;</li>
+  <li>le lieu&nbsp;;</li>
+  <li>la description&nbsp;;</li>
+  <li>le statut de disponibilité (libre, occupé, absent du bureau)&nbsp;;</li>
+  <li>un identifiant technique permettant de relier une copie à son original.</li>
+</ul>
+<p>
+  La liste des participants n'est <strong>jamais</strong> recopiée, précisément pour qu'aucune
+  invitation ne puisse être envoyée à des tiers. Les pièces jointes ne sont pas traitées.
+</p>
+<p>
+  SyncCal ne lit aucun courriel, aucun contact, aucun fichier, et n'accède à aucune autre donnée
+  des comptes concernés.
+</p>
+
+<h2>3. Autorisations Google demandées</h2>
+<table>
+  <tr><th>Habilitation</th><th>Pourquoi</th></tr>
+  <tr>
+    <td><code>https://www.googleapis.com/auth/calendar</code></td>
+    <td>
+      Lire les événements de l'agenda Google concerné pour les diffuser vers les agendas
+      Microsoft&nbsp;365, et y créer, modifier ou supprimer les copies des événements venant de
+      ces derniers. La synchronisation étant bidirectionnelle, un accès en lecture seule ne
+      suffirait pas.
+    </td>
+  </tr>
+</table>
+<p>
+  Seul le calendrier désigné dans la configuration est synchronisé. Les autres calendriers du
+  compte Google ne sont ni lus ni modifiés, hormis la lecture de leur nom lors de la recherche
+  initiale du calendrier cible.
+</p>
+
+<h2>4. Lieu de stockage</h2>
+<p>
+  Toutes les données restent sur l'ordinateur de l'utilisateur. SyncCal n'a pas de serveur, pas
+  d'hébergement, pas de service distant. Rien n'est transmis à l'auteur ni à aucun tiers.
+</p>
+<table>
+  <tr><th>Élément</th><th>Emplacement</th></tr>
+  <tr><td>Jeton d'accès Google (OAuth&nbsp;2.0)</td><td>Fichier local <code>secrets/token_google.json</code></td></tr>
+  <tr><td>Identifiants d'application Google</td><td>Fichier local dans <code>secrets/</code></td></tr>
+  <tr><td>Journaux d'exécution</td><td>Dossier local <code>logs/</code></td></tr>
+  <tr><td>Événements d'agenda</td><td>Dans les agendas eux-mêmes, chez Microsoft et Google</td></tr>
+</table>
+<p>
+  Ces dossiers sont exclus du dépôt public&nbsp;: ni les jetons, ni les journaux, ni aucune donnée
+  d'agenda ne sont publiés.
+</p>
+
+<h2>5. Vers où les données sont copiées</h2>
+<p>
+  Uniquement entre les trois agendas de l'utilisateur, tous lui appartenant&nbsp;: deux agendas
+  professionnels Microsoft&nbsp;365 et un agenda Google. Un événement créé dans l'un est recopié
+  dans les deux autres, dans la limite des droits disponibles — un agenda accessible en lecture
+  seule alimente les autres sans jamais rien recevoir.
+</p>
+<p>
+  Aucune donnée n'est transmise à un service tiers, à un intermédiaire, à un outil d'analyse ou de
+  télémétrie. SyncCal ne communique qu'avec les API de Microsoft et de Google.
+</p>
+
+<h2>6. Conformité à la politique Google</h2>
+<p>
+  L'usage que SyncCal fait des informations reçues des API Google respecte la
+  <a href="https://developers.google.com/terms/api-services-user-data-policy" rel="noopener">Google API
+  Services User Data Policy</a>, y compris ses exigences d'usage limité
+  (<em>Limited Use</em>). Concrètement&nbsp;: les données d'agenda servent exclusivement à la
+  synchronisation décrite ici, ne sont ni vendues, ni transférées, ni utilisées à des fins
+  publicitaires, et ne sont lues par aucun humain en dehors de l'utilisateur lui-même.
+</p>
+
+<h2>7. Conservation et suppression</h2>
+<ul>
+  <li>
+    Les copies restent dans les agendas tant que leur original existe. Supprimer un original
+    supprime ses copies à l'exécution suivante.
+  </li>
+  <li>
+    La commande <code>python sync.py --purge --apply</code> retire toutes les copies produites par
+    l'outil, sans toucher aux événements d'origine.
+  </li>
+  <li>
+    Supprimer le fichier <code>secrets/token_google.json</code> révoque l'accès local.
+  </li>
+  <li>
+    L'accès peut être retiré à tout moment depuis
+    <a href="https://myaccount.google.com/permissions" rel="noopener">la page des autorisations du
+    compte Google</a>.
+  </li>
+</ul>
+
+<h2>8. Sécurité</h2>
+<p>
+  Le jeton d'accès est stocké en clair dans un fichier local, protégé par les droits du compte
+  Windows de l'utilisateur. Cette protection vaut donc celle de la session Windows. Toute personne
+  ayant accès à cette session a accès aux agendas, comme elle aurait accès au client Outlook
+  installé sur la même machine.
+</p>
+
+<h2>9. Évolutions</h2>
+<p>
+  Ce document peut être modifié si le fonctionnement de l'outil change. La date de dernière mise à
+  jour figure en tête de page, et l'historique complet des modifications est consultable dans le
+  dépôt.
+</p>
+
+<h2>10. Contact</h2>
+<p>
+  Pour toute question, ouvrir une
+  <a href="https://github.com/Jerom138/synccal/issues" rel="noopener">issue sur le dépôt GitHub</a>.
+</p>
+
+<footer>
+  <a href="index.html">Accueil</a> &nbsp;·&nbsp;
+  <a href="https://github.com/Jerom138/synccal">Code source</a>
+</footer>
+
+</div>
+</body>
+</html>

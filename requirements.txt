@@ -1,0 +1,16 @@
+# Moteur
+PyYAML>=6.0
+python-dateutil>=2.9
+tzdata>=2024.1
+
+# Backend Google Agenda
+google-api-python-client>=2.130
+google-auth-oauthlib>=1.2
+
+# Backend ICS (agenda en lecture seule)
+requests>=2.32
+icalendar>=6.0
+recurring-ical-events>=3.2
+
+# Backend Outlook classique (COM) - Windows uniquement
+pywin32>=306 ; sys_platform == "win32"
