@@ -106,6 +106,7 @@ def run(args: argparse.Namespace) -> int:
         hide_subject=bool(mirror_cfg.get("hide_subject", False)),
         copy_location=bool(mirror_cfg.get("copy_location", True)),
         copy_body=bool(mirror_cfg.get("copy_body", True)),
+        google_color_id=str(mirror_cfg.get("google_color_id", "") or ""),
         labels={
             key: (settings or {}).get("label", key)
             for key, settings in (config.get("calendars") or {}).items()

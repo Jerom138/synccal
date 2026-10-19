@@ -27,6 +27,13 @@ mirror:
   hide_subject: false
   copy_location: true
   copy_body: true
+  # Couleur Google des copies, de "1" a "11" ("8" = Graphite, gris discret).
+  # Google Agenda n'ayant pas de categories, c'est le seul moyen de voir d'un
+  # coup d'oeil qu'un evenement est une copie - l'equivalent de la categorie
+  # @Miroir posee cote Outlook. Supprimer une copie ne sert a rien : elle est
+  # recreee au run suivant. Pour supprimer partout, supprimer l'original.
+  # "" laisse les copies dans la couleur par defaut du calendrier.
+  google_color_id: "8"
 
 calendars:
 

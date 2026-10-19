@@ -236,7 +236,7 @@ class GoogleCalendarBackend:
                 "timeZone": "UTC",
             }
 
-        return {
+        corps = {
             "summary": content.subject,
             "location": content.location,
             "description": content.body,
@@ -251,6 +251,9 @@ class GoogleCalendarBackend:
                 "private": {PROP_ORIGIN: origin.key, PROP_HASH: source.content_hash}
             },
         }
+        if self.style.google_color_id:
+            corps["colorId"] = self.style.google_color_id
+        return corps
 
     def create(self, source: CanonicalEvent, origin: OriginRef) -> None:
         service = self._connect()

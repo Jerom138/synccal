@@ -233,6 +233,12 @@ class MirrorStyle:
     hide_subject: bool = False
     copy_location: bool = True
     copy_body: bool = True
+    # Couleur Google des copies. Google Agenda n'a pas de categories : la
+    # couleur est le seul moyen de distinguer une copie d'un evenement propre,
+    # ce que la categorie @Miroir permet deja cote Outlook. Sans cette marque,
+    # supprimer une copie par erreur la verrait revenir au run suivant sans
+    # que l'on comprenne pourquoi. "" laisse la couleur par defaut.
+    google_color_id: str = ""
     labels: dict = field(default_factory=dict)
 
     def render(self, source: CanonicalEvent) -> MirrorContent:

@@ -29,6 +29,26 @@ Il n'existe **aucune base de données locale** : toute la mémoire de la synchro
 vit dans les agendas eux-mêmes. Le script survit donc à un changement de poste, à une
 suppression manuelle ou à une exécution interrompue.
 
+### Reconnaître une copie, et la règle qui en découle
+
+| Agenda | Marque visible |
+|---|---|
+| Outlook | catégorie **`@Miroir`** |
+| Google | couleur dédiée (réglage `mirror.google_color_id`, Graphite par défaut) |
+
+**Pour supprimer un événement partout, supprimez l'original — jamais la copie.**
+Supprimer une copie ne sert à rien : son original existe toujours, donc le script la
+recrée au run suivant. Ce n'est pas un défaut, c'est ce qui répare un agenda où un
+nettoyage malencontreux a eu lieu. Supprimer l'original, lui, fait disparaître ses copies
+partout dès l'exécution suivante.
+
+Trois réserves sur la suppression des copies, toutes volontaires :
+
+- l'agenda source doit avoir été lu correctement ce run-là, sinon les copies sont laissées
+  intactes — un silence ne vaut jamais preuve de suppression ;
+- l'événement doit être dans la fenêtre : au-delà, son absence ne prouve rien ;
+- au-delà de `safety.max_deletions`, le run s'arrête et réclame `--force`.
+
 Deux règles coupent les boucles et les doublons :
 
 - un événement porteur d'un marqueur n'est **jamais** repris comme source ;
@@ -145,6 +165,7 @@ Tout se règle dans `config.yaml` :
 | `mirror.subject_prefix` | préfixe des titres copiés ; `{label}` = agenda source |
 | `mirror.hide_subject` | `true` : le titre réel n'est pas recopié, le préfixe devient tout le titre |
 | `mirror.copy_location` / `copy_body` | passer à `false` pour ne pas recopier lieu et description |
+| `mirror.google_color_id` | couleur des copies dans Google, `"1"` à `"11"` ; `""` pour la couleur par défaut |
 | `calendars.<id>.backend` | `outlook_com`, `google_cal` ou `ics_readonly` |
 | `calendars.<id>.store` | backend Outlook : nom du magasin, tel qu'affiché par `check_outlook.py` |
 | `calendars.<id>.folder_path` | backend Outlook : sous-calendrier sous le Calendrier, ex. `Pro B` |
@@ -272,6 +293,7 @@ python tests/test_roundtrip.py   # cycle complet, convergence et idempotence
 | `autorisation Google expiree ou revoquee` | Attendu en statut *Test* : le jeton ne vit que 7 jours. Relancer `python -u authorize_google.py`, ou publier l'application pour supprimer l'expiration. |
 | `Erreur 403 : access_denied` à l'autorisation | Le compte Google n'est pas dans la liste des testeurs de l'écran de consentement, ou l'application n'est pas publiée. |
 | Aucune page ne s'ouvre à l'autorisation | Normal hors terminal interactif. `authorize_google.py` affiche l'URL : la copier dans le navigateur. |
+| Un événement supprimé réapparaît | Vous avez supprimé une **copie**, pas l'original. Le script la recrée tant que son original existe. Supprimer l'original. Les copies se repèrent à la catégorie `@Miroir` dans Outlook, à leur couleur dans Google. |
 | `Arrêt de sécurité : N suppressions` | Lire le plan. Si les suppressions sont légitimes, relancer avec `--force`. |
 | `Arrêt de sécurité : un agenda semble momentanément vide` | Outlook n'a pas fini de descendre la boîte aux lettres. Attendre que le dossier Calendrier se remplisse, puis relancer. |
 | Copies Outlook décalées de l'offset horaire | Régression connue si le code revient à `Start`/`End` : `pywin32` convertit tout datetime en UTC et Outlook le relit comme heure locale. Les copies horaires doivent passer par `StartUTC`/`EndUTC`, les journées entières par une chaîne ISO locale. Voir `_set_utc` dans [backends/outlook_com.py](backends/outlook_com.py). |
