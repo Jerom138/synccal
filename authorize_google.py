@@ -102,6 +102,28 @@ def main() -> int:
     print(f"Jeton enregistre dans {TOKEN.relative_to(ROOT)}")
     print("")
 
+    # Google n'annonce la duree de vie du jeton de rafraichissement que dans la
+    # reponse brute de l'echange, et seulement lorsqu'elle est limitee. Son
+    # absence est donc la preuve que le jeton est durable.
+    duree = None
+    try:
+        duree = flow.oauth2session.token.get("refresh_token_expires_in")
+    except Exception:  # noqa: BLE001 - champ absent selon les versions
+        pass
+
+    print("-" * 78)
+    if duree:
+        jours = int(duree) / 86400
+        print(f"ATTENTION : Google limite ce jeton a {jours:.1f} jour(s).")
+        print("L'ecran de consentement n'est pas reconnu comme publie et verifie.")
+        print("La synchronisation s'arretera a l'expiration ; relancer ce script la")
+        print("remettra en route. Pour s'en affranchir : faire verifier l'application.")
+    else:
+        print("Jeton durable : Google n'annonce aucune date d'expiration.")
+        print("Il restera valide jusqu'a revocation explicite de votre part.")
+    print("-" * 78)
+    print("")
+
     service = build("calendar", "v3", credentials=creds, cache_discovery=False)
 
     attendu = nom_attendu()
